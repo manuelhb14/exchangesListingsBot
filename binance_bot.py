@@ -1,9 +1,14 @@
 from tweepy import OAuthHandler, Stream, StreamListener
-import keys
 import requests
 import json
 import builtins
+from pycoingecko import CoinGeckoAPI
 
+import keys
+import duplicates
+
+cg = CoinGeckoAPI()
+coinlist = cg.get_coins_list()
 consumer_key=keys.consumer_key
 consumer_secret=keys.consumer_secret
 access_token=keys.access_token
@@ -19,18 +24,26 @@ def telegram_bot_sendtext(bot_message):
     return response.json()
 
 class StdOutListener(StreamListener):
-    """ A listener handles tweets that are received from the stream.
-    This is a basic listener that just prints received tweets to stdout.
-    """
     def on_data(self, data):
         try:
-            text = json.loads(data)['text']
-            if ("listing" in text):
-                print(data)
-                telegram_bot_sendtext(text)
-                return True
-        except:
-            print("Error")
+            print(data)
+            json_data = json.loads(data)
+            tweet = json_data['text'].lower().strip
+            date = json_data['created_at']
+            print(tweet)
+            if ("listing" in tweet):
+                print("listing keyword found")
+                coin_symbol = json_data["entities"]['symbols'][0]['text'].lower()
+                print(coin_symbol)
+                for coin in coinlist:
+                    if (coin['symbol'] == coin_symbol):
+                        print("symbol found in coingecko")
+                        coin_id = coin["id"]
+                        telegram_bot_sendtext("{}\n{}\n{} {}".format(tweet,date[:-10],coin_id.capitalize(),coin_symbol.upper()))
+                        print("telegram sent")
+                        return True
+        except Exception as e:
+            print(e)
             pass
 
     def on_error(self, status):
@@ -43,7 +56,7 @@ if __name__ == '__main__':
         auth.set_access_token(access_token, access_token_secret)
 
         stream = Stream(auth, l)
-        stream.filter(follow=['877807935493033984'])
-    except:
-        print("Error")
+        stream.filter(follow=['829941007076687872'])
+    except Exception as e:
+        print(e)
         pass
