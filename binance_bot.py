@@ -1,7 +1,6 @@
 from tweepy import OAuthHandler, Stream, StreamListener
 import requests
 import json
-import builtins
 from pycoingecko import CoinGeckoAPI
 
 import keys
@@ -26,28 +25,39 @@ def telegram_bot_sendtext(bot_message):
 class StdOutListener(StreamListener):
     def on_data(self, data):
         try:
-            print(data)
+            # print(data)
             json_data = json.loads(data)
-            tweet = json_data['text'].lower().strip
+            tweet = json_data['text'].lower()
             date = json_data['created_at']
+            user = json_data['user']['id']
             print(tweet)
-            if ("listing" in tweet):
-                print("listing keyword found")
+            print(date)
+            isBinance = user=='877807935493033984'
+            print("from: " + str(user) + " isBinance: " + str(isBinance))
+            if ("list" in tweet):
+                print("list keyword found")
                 coin_symbol = json_data["entities"]['symbols'][0]['text'].lower()
                 print(coin_symbol)
                 for coin in coinlist:
-                    if (coin['symbol'] == coin_symbol):
+                    if (coin['symbol'] == coin_symbol and isBinance):
                         print("symbol found in coingecko")
                         coin_id = coin["id"]
-                        telegram_bot_sendtext("{}\n{}\n{} {}".format(tweet,date[:-10],coin_id.capitalize(),coin_symbol.upper()))
+                        telegram_bot_sendtext("{}\n{} {}".format(date[:-10],coin_id.capitalize(),coin_symbol.upper()))
                         print("telegram sent")
                         return True
+                print("Not from Binance account")
+            elif (isBinance==True):
+                telegram_bot_sendtext("{}".format(date[:-10]))                        
+            else:
+                print("list keyword not found")
+            print("")
         except Exception as e:
             print(e)
             pass
 
     def on_error(self, status):
         print(status)
+        return True
 
 if __name__ == '__main__':
     try:
@@ -56,7 +66,8 @@ if __name__ == '__main__':
         auth.set_access_token(access_token, access_token_secret)
 
         stream = Stream(auth, l)
-        stream.filter(follow=['829941007076687872'])
+        #stream.filter(follow=['829941007076687872'])
+        stream.filter(follow=['877807935493033984'])
     except Exception as e:
         print(e)
         pass
