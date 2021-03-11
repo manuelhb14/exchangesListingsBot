@@ -29,10 +29,12 @@ class StdOutListener(StreamListener):
             json_data = json.loads(data)
             tweet = json_data['text'].lower()
             date = json_data['created_at']
-            user = json_data['user']['id']
+            user = json_data['user']['id_str']
+            print(json_data)
             print(tweet)
             print(date)
-            isBinance = user=='877807935493033984'
+            print("user")
+            isBinance = user=='829941007076687872'
             print("from: " + str(user) + " isBinance: " + str(isBinance))
             if ("list" in tweet):
                 print("list keyword found")
@@ -42,7 +44,9 @@ class StdOutListener(StreamListener):
                     if (coin['symbol'] == coin_symbol and isBinance):
                         print("symbol found in coingecko")
                         coin_id = coin["id"]
-                        telegram_bot_sendtext("{}\n{} {}".format(date[:-10],coin_id.capitalize(),coin_symbol.upper()))
+                        contract_address = cg.get_coin_by_id(coin_id)["platforms"]['ethereum']
+                        print(contract_address)
+                        telegram_bot_sendtext("{}\n{} {}\nContract address:\n{}".format(date[:-10],coin_id.capitalize(),coin_symbol.upper(),contract_address))
                         print("telegram sent")
                         return True
                 print("Not from Binance account")
@@ -66,8 +70,8 @@ if __name__ == '__main__':
         auth.set_access_token(access_token, access_token_secret)
 
         stream = Stream(auth, l)
-        #stream.filter(follow=['829941007076687872'])
-        stream.filter(follow=['877807935493033984'])
+        stream.filter(follow=['829941007076687872'])
+        # stream.filter(follow=['877807935493033984'])
     except Exception as e:
         print(e)
         pass
