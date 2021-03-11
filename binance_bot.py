@@ -31,9 +31,6 @@ class StdOutListener(StreamListener):
             date = json_data['created_at']
             user = json_data['user']['id_str']
             print(json_data)
-            print(tweet)
-            print(date)
-            print("user")
             isBinance = user=='829941007076687872'
             print("from: " + str(user) + " isBinance: " + str(isBinance))
             if ("list" in tweet):
@@ -46,7 +43,7 @@ class StdOutListener(StreamListener):
                         coin_id = coin["id"]
                         contract_address = cg.get_coin_by_id(coin_id)["platforms"]['ethereum']
                         print(contract_address)
-                        telegram_bot_sendtext("{}\n{} {}\nContract address:\n{}".format(date[:-10],coin_id.capitalize(),coin_symbol.upper(),contract_address))
+                        telegram_bot_sendtext("{}\n{} {}\nContract address:\n{}\n{}Dext".format(date[:-10],coin_id.capitalize(),coin_symbol.upper(),contract_address))
                         print("telegram sent")
                         return True
                 print("Not from Binance account")
