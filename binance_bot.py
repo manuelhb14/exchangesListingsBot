@@ -2,9 +2,8 @@ from tweepy import OAuthHandler, Stream, StreamListener
 import requests
 import json
 from pycoingecko import CoinGeckoAPI
-
+import urllib.parse
 import keys
-import duplicates
 
 cg = CoinGeckoAPI()
 coinlist = cg.get_coins_list()
@@ -31,19 +30,24 @@ class StdOutListener(StreamListener):
             date = json_data['created_at']
             user = json_data['user']['id_str']
             print(json_data)
-            isBinance = user=='829941007076687872'
+            isBinance = ((user=='877807935493033984') or (user=='829941007076687872'))
             print("from: " + str(user) + " isBinance: " + str(isBinance))
             if ("list" in tweet):
                 print("list keyword found")
                 coin_symbol = json_data["entities"]['symbols'][0]['text'].lower()
                 print(coin_symbol)
+                text = json_data["text"]
+                print(text)
                 for coin in coinlist:
                     if (coin['symbol'] == coin_symbol and isBinance):
                         print("symbol found in coingecko")
                         coin_id = coin["id"]
-                        contract_address = cg.get_coin_by_id(coin_id)["platforms"]['ethereum']
+                        coin_data = cg.get_coin_by_id(coin_id)
+                        contract_address = coin_data["platforms"]['ethereum']
+                        coin_price = coin_data["market_data"]["current_price"]["usd"]
                         print(contract_address)
-                        telegram_bot_sendtext("{}\n{} {}\nContract address:\n{}\n{}Dext".format(date[:-10],coin_id.capitalize(),coin_symbol.upper(),contract_address))
+                        print(coin_price)
+                        telegram_bot_sendtext("{}\n{}\n{} {}\nContract address:\n{}\nPrice atm: {}\nUniswap link: {}".format(date[:-10],urllib.parse.quote_plus(text),coin_id.capitalize(),coin_symbol.upper(),contract_address,str(coin_price),"https%3A%2F%2Fapp.uniswap.org%2F%23%2Fswap%3FoutputCurrency%3D"+contract_address))
                         print("telegram sent")
                         return True
                 print("Not from Binance account")
@@ -67,8 +71,7 @@ if __name__ == '__main__':
         auth.set_access_token(access_token, access_token_secret)
 
         stream = Stream(auth, l)
-        stream.filter(follow=['829941007076687872'])
-        # stream.filter(follow=['877807935493033984'])
+        stream.filter(follow=['877807935493033984,829941007076687872'])
     except Exception as e:
         print(e)
         pass
