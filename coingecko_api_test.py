@@ -10,9 +10,12 @@ for i in coinlist:
         coin_info = i
         print(coin_info)
 contract_address = cg.get_coin_by_id(coin_info['id'])
-print(contract_address.keys())
-for key in contract_address.keys():
-    print(contract_address[key])
+coin_price = contract_address["market_data"]["current_price"]["usd"]
+print(coin_price)
+# print(contract_address.keys())
+# print(contract_address)
+# for key in contract_address.keys():
+#     print(contract_address[key])
 
 # seen = {}
 # dupes = []
