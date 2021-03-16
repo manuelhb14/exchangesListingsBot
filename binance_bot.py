@@ -52,7 +52,8 @@ class StdOutListener(StreamListener):
                         return True
                 print("Not from Binance account")
             elif (isBinance==True):
-                telegram_bot_sendtext("{}".format(date[:-10]))                        
+                text = json_data["text"]
+                # telegram_bot_sendtext("{}\n{}".format(date[:-10],urllib.parse.quote_plus(text)))                        
             else:
                 print("list keyword not found")
             print("")
