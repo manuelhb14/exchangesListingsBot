@@ -43,13 +43,16 @@ class StdOutListener(StreamListener):
                         print("symbol found in coingecko")
                         coin_id = coin["id"]
                         coin_data = cg.get_coin_by_id(coin_id)
-                        contract_address = coin_data["platforms"]['ethereum']
+                        contract_address_eth = coin_data["platforms"]['ethereum']
+                        # contract_address_bsc = coin_data["platforms"]['ethereum']
                         coin_price = coin_data["market_data"]["current_price"]["usd"]
-                        print(contract_address)
+                        print(contract_address_eth)
                         print(coin_price)
-                        telegram_bot_sendtext("{}\n{}\n{} {}\nContract address:\n{}\nPrice atm: {}\nUniswap link: {}".format(date[:-10],urllib.parse.quote_plus(text),coin_id.capitalize(),coin_symbol.upper(),contract_address,str(coin_price),"https%3A%2F%2Fapp.uniswap.org%2F%23%2Fswap%3FoutputCurrency%3D"+contract_address))
+                        telegram_bot_sendtext("{}\n{}\n{} {}\nContract address:\n{}\nPrice atm: {}\nUniswap link: {}".format(date[:-10],urllib.parse.quote_plus(text),coin_id.capitalize(),coin_symbol.upper(),contract_address_eth,str(coin_price),"https%3A%2F%2Fapp.uniswap.org%2F%23%2Fswap%3FoutputCurrency%3D"+contract_address_eth))
                         print("telegram sent")
                         return True
+                    else:
+                        telegram_bot_sendtext("{}\n{}\n{}".format(date[:-10],urllib.parse.quote_plus(text)),'Contract not found')    
                 print("Not from Binance account")
             elif (isBinance==True):
                 text = json_data["text"]

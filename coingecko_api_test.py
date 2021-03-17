@@ -4,14 +4,16 @@ cg = CoinGeckoAPI()
 
 coinlist = cg.get_coins_list()
 # print(len(coinlist))
-coin_symbol = 'matic'
+coin_symbol = 'bifi'
 for i in coinlist:
     if i['symbol'] == coin_symbol:
         coin_info = i
         print(coin_info)
 contract_address = cg.get_coin_by_id(coin_info['id'])
+# contract_address_eth = contract_address["platforms"]['ethereum']
+contract_address_bsc = contract_address
 coin_price = contract_address["market_data"]["current_price"]["usd"]
-print(coin_price)
+print(contract_address_bsc)
 # print(contract_address.keys())
 # print(contract_address)
 # for key in contract_address.keys():
