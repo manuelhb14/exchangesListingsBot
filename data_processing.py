@@ -2,6 +2,7 @@ import json
 
 def basic_info(data):
     json_data = json.loads(data)
+    print(json_data)
     tweet = json_data['text'].lower()
     date = json_data['created_at']
     user = json_data['user']['id_str']
@@ -11,4 +12,5 @@ def basic_info(data):
 
 def coin_data(json_data):
     coin_symbol = json_data["entities"]['symbols'][0]['text'].lower()
-    return(coin_symbol)
+    coin_twitter = json_data["entities"]['user_mentions'][0]['screen_name'].lower()
+    return(coin_symbol,coin_twitter)

@@ -1,4 +1,23 @@
+Example of ETH contract:
+
 #Binance Will List @MANTRADAO $OM in the Innovation Zone
+
+
+Example of BSC contract:
+
+#Binance Will List @PancakeSwap $CAKE in the Innovation Zone
+
+
+Example of BSC with multiple results:
+
+#Binance Will List @beefyfinance $BIFI in the Innovation Zone
+
+
+Example of both BSC and ETH contracts and multiple results with id:
+
+#Binance Will List @SuperFarmDAO $SUPER in the Innovation Zone
+
+
 
 
 #Binance Futures: New Listings This Week (2021-03-15)
