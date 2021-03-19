@@ -31,15 +31,17 @@ class StdOutListener(StreamListener):
                 print(coin_symbol)
                 if (isBinance):
                     info,platform,price = coin_details.coingecko_info(cg, coinlist, coin_symbol, coin_twitter)
-                    contracts = coin_details.uni_pancake_link(platform)
-                    telegram_bot_sendtext("{}\n{}\n{} {}\nPrice atm: {}\nExchanges links:\n{}".format(date[:-10],urllib.parse.quote_plus(text),info['name'],coin_symbol.upper(),str(price),contracts))
+                    contracts = coin_details.uni_cake_link(platform)
+                    cg_link = urllib.parse.quote_plus("https://coingecko.com/en/coins/" + info['name'].lower().replace(' ','-').replace('.','-'))
+                    cmc_link = urllib.parse.quote_plus("https://coinmarketcap.com/currencies/" + info['name'].lower().replace(' ','-').replace('.','-'))
+                    telegram_bot_sendtext("{}\n{}\n{} {}\nPrice atm: {}\nCoinGecko: {}\nCoinMarketCap: {}\nExchanges links:\n{}".format(date[:-10],urllib.parse.quote_plus(text),info['name'],coin_symbol.upper(),str(price),cg_link,cmc_link,contracts))
                     print("telegram sent")
                     return True
                 else:
-                    print("Not from Binance account")                      
+                    print("Not from Binance account...")
             else:
-                ("list keyword not found, sending telegram with binance tweet...")
-                telegram_bot_sendtext("{}\n{}".format(date[:-10],urllib.parse.quote_plus(text)))  
+                ("list keyword not found...")
+                # telegram_bot_sendtext("{}\n{}".format(date[:-10],urllib.parse.quote_plus(text)))  
             print("")
         except Exception as e:
             print(e)
@@ -56,7 +58,7 @@ if __name__ == '__main__':
         auth.set_access_token(keys.access_token, keys.access_token_secret)
 
         stream = Stream(auth, l)
-        stream.filter(follow=['877807935493033984'])
+        stream.filter(follow=['877807935493033984','829941007076687872'])
         #877807935493033984
         #829941007076687872
 

@@ -23,7 +23,7 @@ def coingecko_info(cg,coinlist,coin_symbol,coin_twitter):
         tweet_num+=1 
     return('Error....')
 
-def uni_pancake_link(platform):
+def uni_cake_link(platform):
     contracts = ''
     if ('ethereum' in platform):
         contracts += ('https%3A%2F%2Fapp.uniswap.org%2F%23%2Fswap%3FoutputCurrency%3D' + platform['ethereum'] + '\n')
