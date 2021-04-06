@@ -14,3 +14,9 @@ def coin_data(json_data):
     coin_symbol = json_data["entities"]['symbols'][0]['text'].lower()
     coin_twitter = json_data["entities"]['user_mentions'][0]['screen_name'].lower()
     return(coin_symbol,coin_twitter)
+
+def coin_data_webpage(text):
+    for i in range(len(text)):
+        while (text[i]!=')'):
+            continue
+    print(text[:i])
