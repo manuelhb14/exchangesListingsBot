@@ -1,6 +1,5 @@
 from tweepy import OAuthHandler, Stream, StreamListener
 import requests
-import json
 from pycoingecko import CoinGeckoAPI
 import urllib.parse
 import keys
