@@ -6,6 +6,8 @@ import keys
 import data_processing
 import coin_details
 
+#TODO: Add comments
+
 cg = CoinGeckoAPI()
 coinlist = cg.get_coins_list()[1:]
 
@@ -20,7 +22,7 @@ def telegram_bot_sendtext(bot_message):
 
 class StdOutListener(StreamListener):
     def on_data(self, data):
-        try:
+        try: #TODO: Update if tweet has more than one new listing
             print("basic tweet info...")
             json_data,tweet,date,user,text,isBinance = data_processing.basic_info(data)
             print("from: " + str(user) + " isBinance: " + str(isBinance))
