@@ -29,8 +29,13 @@ Double Listing:
 USDT-margined #BTC, $ETH Quarterly 0625 contracts 
 USDT-margined $MANA @decentraland, $HBAR @hedera perpetual contracts
 
-https://binance.com/en/support/announcement/1de348ee4d994fbeabc6a4e54066b344?ref=JLI1VBLA&utm_source=BinanceTwitter&utm_medium=GlobalSocial&utm_campaign=GlobalSocial
 
+Example for Rinkeby testnet:
+
+#Binance Will List @Uniswap $UNI in the Innovation Zone
+
+
+https://binance.com/en/support/announcement/1de348ee4d994fbeabc6a4e54066b344?ref=JLI1VBLA&utm_source=BinanceTwitter&utm_medium=GlobalSocial&utm_campaign=GlobalSocial
 
 
 https://www.dextools.io/app/uniswap/pair-explorer/0xe46935ae80e05cdebd4a4008b6ccaa36d2845370
