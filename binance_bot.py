@@ -5,6 +5,7 @@ import urllib.parse
 import keys
 import data_processing
 import coin_details
+import final
 
 #TODO: Add comments
 
@@ -37,7 +38,8 @@ class StdOutListener(StreamListener):
                     cmc_link = urllib.parse.quote_plus("https://coinmarketcap.com/currencies/" + info['name'].lower().replace(' ','-').replace('.','-'))
                     telegram_bot_sendtext("{}\n{}\n{} {}\nPrice atm: {}\nCoinGecko: {}\nCoinMarketCap: {}\nExchanges links:\n{}".format(date[:-10],urllib.parse.quote_plus(text),info['name'],coin_symbol.upper(),str(price),cg_link,cmc_link,contracts))
                     print("telegram sent")
-                    return True
+                    final.uniswap_main(platform["ethereum"])
+                    return False
                 else:
                     print("Not from Binance account...")
             else:
