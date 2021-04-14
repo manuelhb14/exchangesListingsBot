@@ -4,8 +4,8 @@ import time
 
 def uniswap_main(token_address):
     #? Create keys.py file to add your adddress and private key to be able to make transactions
-    address = keys.address 
-    private_key = keys.private_key
+    address = keys.uniswap_address 
+    private_key = keys.uniswap_private_key
     eth_quantity = 1
 
     uniswap_trading = UniBot(address, private_key, token_address, eth_quantity)
