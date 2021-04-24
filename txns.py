@@ -9,7 +9,7 @@ class Txn_bot():
     def __init__(self, token_address, quantity, net, slippage, gas_price):
         self.net = net
         self.w3 = self.connect()
-        print("Access to Infura node: {}".format((self.w3.isConnected())))
+        print("Access to Infura/BSC RPC node: {}".format((self.w3.isConnected())))
         self.address, self.private_key = self.set_address()
         print("Address: {}".format(self.address))
         print("Current balance of WETH/WBNB: {}".format(self.w3.fromWei(self.w3.eth.get_balance(self.address), 'ether')))
@@ -20,6 +20,7 @@ class Txn_bot():
         self.quantity = quantity
         self.slippage = 1 - (slippage/100)
         self.gas_price = gas_price
+        self.WETH = self.get_WETH_address()
 
 
     def connect(self):
@@ -69,10 +70,9 @@ class Txn_bot():
             token_contract = self.w3.eth.contract(address=token_address, abi=contract_abi)
         return token_contract
 
-
     def get_amounts_out_buy(self):
         return self.router.functions.getAmountsOut(
-            int(self.quantity * self.slippage),
+            self.quantity,
             [self.router.functions.WETH().call(), self.token_address]
             ).call()
 
@@ -81,6 +81,14 @@ class Txn_bot():
             self.token_contract.functions.balanceOf(self.address).call(),
             [self.token_address, self.router.functions.WETH().call()]
             ).call()
+
+    def get_WETH_address(self):
+        if self.net=="eth-mainnet":
+            return "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        elif self.net=="eth-rinkeby":
+            return "0xc778417E063141139Fce010982780140Aa0cD5Ab"
+        elif self.net=="bsc-mainnet":
+            return "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"        
 
     def approve(self):
         txn = self.token_contract.functions.approve(
@@ -104,9 +112,12 @@ class Txn_bot():
         print(txn_receipt)
 
     def buy_token(self):
-        txn = self.router.functions.swapExactETHForTokens(
-            self.get_amounts_out_buy()[-1],
-            [self.router.functions.WETH().call(), self.token_address], 
+        min_tokens = int(self.get_amounts_out_buy()[-1] * self.slippage);
+        print("Minimum {} recieved:{} ".format(self.token_contract.functions.symbol().call(), min_tokens/(1*10**18)))
+        txn = self.router.functions.swapExactTokensForTokens(
+            self.quantity,
+            min_tokens,
+            [self.WETH, self.token_address], 
             bytes.fromhex(self.address[2:]), 
             int(time.time()) + 10 * 60 # 10 min limit
         ).buildTransaction(
@@ -114,7 +125,7 @@ class Txn_bot():
             'gas': 250000,
             'gasPrice': self.gas_price,
             'nonce': self.w3.eth.getTransactionCount(self.address), 
-            'value': self.quantity}
+            'value': 0}
             )
 
         signed_txn = self.w3.eth.account.sign_transaction(
