@@ -39,25 +39,22 @@ class Txn_bot():
         return w3
 
     def set_address(self):
-        if "eth" in self.net:
-            return(keys.uniswap_address, keys.uniswap_private_key)
-        else:
-            return(keys.pancake_address, keys.pancake_private_key)
+        return(keys.uniswap_address, keys.uniswap_private_key)
 
-    def set_router(self):   #TODO: Refactor functions into shorter ones?
+    def set_router(self):   #TODO: Refactor functions
         if "eth" in self.net:
             router_address = Web3.toChecksumAddress("0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D")
             with open("./abis/IUniswapV2Router02.json") as f:
                 contract_abi = json.load(f)['abi']
             router = self.w3.eth.contract(address=router_address, abi=contract_abi)
         else:
-            router_address = Web3.toChecksumAddress("0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F") # mainnet router
+            router_address = Web3.toChecksumAddress("0x10ED43C718714eb63d5aA57B78B54704E256024E") # mainnet router
             with open("./abis/pancakeRouter.json") as f:
                 contract_abi = json.load(f)['abi']
             router = self.w3.eth.contract(address=router_address, abi=contract_abi)
         return (router_address, router)
 
-    def set_token_contract(self): #TODO: Refactor functions into shorter ones?
+    def set_token_contract(self): #TODO: Refactor functions
         if "eth" in self.net:
             token_address = Web3.toChecksumAddress(self.token_address)
             with open("./abis/erc20_abi.json") as f:
@@ -71,10 +68,15 @@ class Txn_bot():
         return token_contract
 
     def get_amounts_out_buy(self):
+        # print(self.quantity)
+        # print(self.router.functions.WETH().call())
+        # print(self.token_address)
         return self.router.functions.getAmountsOut(
             self.quantity,
             [self.router.functions.WETH().call(), self.token_address]
-            ).call()
+            ).call({
+                "from": self.address
+            })
 
     def get_amounts_out_sell(self):
         return self.router.functions.getAmountsOut(
@@ -138,7 +140,7 @@ class Txn_bot():
         txn_receipt = self.w3.eth.waitForTransactionReceipt(txn)
         print(txn_receipt)
 
-    def sell_token(self):
+    def sell_token(self): # TODO: Add tokens with fees
         txn = self.router.functions.swapExactTokensForETH(
             self.token_contract.functions.balanceOf(self.address).call(),
             int(self.get_amounts_out_sell()[-1] * self.slippage),
