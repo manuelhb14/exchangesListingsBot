@@ -4,7 +4,9 @@ Exchanges Listings Bot that sends notifications with a Telegram bot using Twitte
 
 Use Twitter API to send notifications with Telegram when exchanges tweets about new listings.
 
-Exchanges that are being monitored: Binance, Huobi, Kraken, KuCoin, Bitfinex, Bithumb, Crypto.com. More exchanges can be added.
+Exchanges that will be monitored: Binance, Huobi, Kraken, KuCoin, Bitfinex, Bithumb, Crypto.com. More exchanges can be added.
+
+Current exchanges: Binance
 
 ## Instructions
 
@@ -25,4 +27,4 @@ bot_token = ''
 bot_chatID = ''
 ```
 
-Run main.py and wait for notifications. To automatically buy the token on Uniswap or PancakeSwap you can see [this repository](https://github.com/manuelhb14/cake_uni_transaction_bot). A bot for placing orders on Binance futures will be developed in the future.
+Run exchanges_bot.py and wait for notifications. To automatically buy the token on Uniswap or PancakeSwap you can see [this repository](https://github.com/manuelhb14/cake_uni_transaction_bot). A bot for placing orders on Binance futures will be developed in the future.
