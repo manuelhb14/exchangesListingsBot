@@ -4,7 +4,7 @@ Exchanges Listings Bot that sends notifications with a Telegram bot using Twitte
 
 Use Twitter API to send notifications with Telegram when exchanges tweets about new listings.
 
-Exchanges that will be monitored: Binance, Huobi, Kraken, KuCoin, Bitfinex, Bithumb, Crypto.com. More exchanges can be added.
+Exchanges that will be monitored: Binance, Coinbase, Huobi, Kraken, KuCoin, Bitfinex, Bithumb, Crypto.com. More exchanges can be added.
 
 Current exchanges: Binance
 
