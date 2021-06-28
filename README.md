@@ -23,5 +23,6 @@ access_token_secret=""
 
 bot_token = ''
 bot_chatID = ''
+```
 
 Run main.py and wait for notifications. To automatically buy the token on Uniswap or PancakeSwap you can see this repository[https://github.com/manuelhb14/cake_uni_transaction_bot]. A bot for pacing orders on Binance futures will be developed in the future.
