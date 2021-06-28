@@ -8,8 +8,6 @@ Exchanges that are being monitored: Binance, Huobi, Kraken, KuCoin, Bitfinex, Bi
 
 ## Instructions
 
-### Step 1 
-
 Create a keys.py file with your keys
 
 ```python
@@ -26,23 +24,4 @@ access_token_secret=""
 bot_token = ''
 bot_chatID = ''
 
-
-# Metamask keys
-
-uniswap_address = "0x000000000000000000000000000" 
-uniswap_private_key = ""
-
-
-# BSC keys
-
-pancake_address = "0x000000000000000000000000000" 
-pancake_private_key = ""
-```
-
-### Step 2 
-
-Get token address TODO
-
-## Step 3
-
-Run main.py to buy the token
+Run main.py and wait for notifications. To automatically buy the token on Uniswap or PancakeSwap you can see this repository[https://github.com/manuelhb14/cake_uni_transaction_bot]. A bot for pacing orders on Binance futures will be developed in the future.
